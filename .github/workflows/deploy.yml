@@ -17,12 +17,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10
+          python-version: '3.10.x'
+          architecture: 'x64'
 
-      - name: Install SAM CLI
+      - name: Upgrade pip & install SAM CLI
         run: |
-          pip install --upgrade pip
-          pip install aws-sam-cli
+          python -m pip install --upgrade pip
+          python -m pip install aws-sam-cli
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
