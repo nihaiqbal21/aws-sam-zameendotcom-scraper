@@ -1,0 +1,42 @@
+name: SAM CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Install SAM CLI
+        run: |
+          pip install --upgrade pip
+          pip install aws-sam-cli
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: YOUR_AWS_REGION
+
+      - name: Build SAM project
+        run: sam build
+
+      - name: Deploy SAM project
+        run: |
+          sam deploy --stack-name zameen-scraper-stack \
+                     --capabilities CAPABILITY_IAM \
+                     --no-confirm-changeset \
+                     --resolve-s3
