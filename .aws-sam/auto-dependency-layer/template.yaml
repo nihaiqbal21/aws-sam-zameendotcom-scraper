@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Zameen property scraper Lambda
+Globals:
+  Function:
+    Runtime: python3.10
+    Timeout: 600
+    MemorySize: 1024
+    Architectures:
+    - x86_64
+Resources:
+  ZameenScraperBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: zameen-scraper-data
+    DeletionPolicy: Retain
+  ZameenScraperFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ZameenScraperFunction
+      Handler: app.lambda_handler
+      Policies:
+      - AWSLambdaBasicExecutionRole
+      - AmazonS3FullAccess
+      Environment:
+        Variables:
+          BUCKET_NAME:
+            Ref: ZameenScraperBucket
+      Events:
+        ScrapeApi:
+          Type: Api
+          Properties:
+            Path: /scrape
+            Method: GET
+        DailyScrape:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 2 * * ? *)
+            Name: ZameenDailyScrape
+            Description: Daily Zameen scrape
+            Enabled: true
+      Layers:
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.ZameenScraperFunctione6592c1aDepLayer
+    Metadata:
+      SamResourceId: ZameenScraperFunction
+  AwsSamAutoDependencyLayerNestedStack:
+    DeletionPolicy: Delete
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      TemplateURL: C:\Users\Niha Iqbal\zameen-scraper\.aws-sam\auto-dependency-layer\adl_nested_template.yaml
+    Type: AWS::CloudFormation::Stack
+Outputs:
+  ScrapeApiUrl:
+    Description: API Gateway endpoint URL for Prod stage
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/Prod/scrape
+  ZameenScraperFunctionArn:
+    Description: Zameen Scraper Lambda ARN
+    Value:
+      Fn::GetAtt:
+      - ZameenScraperFunction
+      - Arn
+  ZameenScraperBucketName:
+    Description: S3 Bucket for storing listings
+    Value:
+      Ref: ZameenScraperBucket

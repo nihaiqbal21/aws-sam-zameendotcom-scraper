@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS SAM CLI Nested Stack for Auto Dependency Layer Creation
+Metadata:
+  SamCliInfo: 1.146.0
+  key: AWS SAM CLI sync command
+Outputs:
+  ZameenScraperFunctione6592c1aDepLayer:
+    Value:
+      Ref: ZameenScraperFunctione6592c1aDepLayer
+Resources:
+  ZameenScraperFunctione6592c1aDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - python3.10
+      ContentUri: C:\Users\Niha Iqbal\zameen-scraper\.aws-sam\auto-dependency-layer\ZameenScraperFunctione6592c1aDepLayer
+      Description: Auto created layer for dependencies of function ZameenScraperFunction
+      LayerName: zameen-scraper4f67349c-ZameenScraperFunctione6592c1a-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+Transform: AWS::Serverless-2016-10-31
