@@ -15,9 +15,6 @@ Resources:
   # S3 bucket for storing scraped listings
   ZameenScraperBucket:
     Type: AWS::S3::Bucket
-    Properties:
-      BucketName: zameen-scraper-data   # must be globally unique
-    DeletionPolicy: Retain              # IMPORTANT: keep data if stack deleted
 
   ZameenScraperFunction:
     Type: AWS::Serverless::Function
