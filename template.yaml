@@ -37,7 +37,6 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: cron(0 2 * * ? *)
-            Name: ZameenDailyScrape
             Description: Daily Zameen scrape
             Enabled: true
 
