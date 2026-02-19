@@ -12,7 +12,6 @@ Globals:
       - x86_64
 
 Resources:
-  # S3 bucket for storing scraped listings
   ZameenScraperBucket:
     Type: AWS::S3::Bucket
 
